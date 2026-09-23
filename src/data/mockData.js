@@ -1,4 +1,4 @@
-export const users = [
+export const initialUsers = [
   {
     id: 1,
     name: "Omar Nagy",
@@ -49,7 +49,7 @@ export const users = [
   },
 ];
 
-export const projects = [
+export const initialProjects = [
   {
     id: 1,
     title: "Aerodynamics Package",
@@ -437,7 +437,7 @@ export const projects = [
   },
 ];
 
-export const tasks = [
+export const initialTasks = [
   {
     id: 1,
     projectId: 1,
