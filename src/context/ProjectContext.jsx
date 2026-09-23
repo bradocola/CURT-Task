@@ -1,9 +1,15 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { initialProjects } from "../data/mockData.js";
 export const ProjectContext = createContext(null);
 
 export function ProjectProvider({ children }) {
-    const [ project ,setProject ] =useState(initialProjects)
+    const [ project ,setProject ] =useState(JSON.parse(localStorage.getItem('project'))||initialProjects)
+    useEffect(() =>
+        {
+            localStorage.setItem('project', JSON.stringify(project));
+        },
+        [project]
+    )
     function deleteProject(id) {
         setProject([...(project.filter((project) => (project.id !== id)))]);
     };

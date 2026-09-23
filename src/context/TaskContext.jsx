@@ -1,24 +1,31 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { initialTasks } from "../data/mockData.js";
 export const TaskContext = createContext(null);
 
 export function TaskProvider({ children }) {
-    const [ task ,setTask ] =useState(initialTasks)
+    const [task, setTask] = useState(JSON.parse(localStorage.getItem('task')) || initialTasks)
+
+    useEffect(() => {
+        localStorage.setItem('task', JSON.stringify(task));
+    },
+        [task]
+    )
+
     function deleteTask(id) {
         setTask([...(task.filter((task) => (task.id !== id)))]);
     };
 
     function addTask(newTask) {
-        setTask([...task , newTask]);
+        setTask([...task, newTask]);
     };
 
-    function maxId(){
+    function maxId() {
         return Math.max(...(task.map((task) => (task.id))))
     }
 
-    function editTask(id, title, description, priority){
+    function editTask(id, updates) {
         setTask(task.map((p) =>
-            p.id === id ? { ...p, title, description, priority } : p
+            p.id === id ? { ...p, ...updates} : p
         ));
     }
 
@@ -29,7 +36,7 @@ export function TaskProvider({ children }) {
     }
 
     return (
-        <TaskContext.Provider value={{ task, setTask, maxId, addTask, deleteTask, editTask, updateStatus}}>
+        <TaskContext.Provider value={{ task, setTask, maxId, addTask, deleteTask, editTask, updateStatus }}>
             {children}
         </TaskContext.Provider>
     );

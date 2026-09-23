@@ -17,6 +17,19 @@ const ProjectDetails = () => {
   const [description, setDescription] = useState();
   const [priority, setPriority] = useState("Low");
   const [idT, setIdT] = useState();
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    if (!title || !title.trim()) {
+      newErrors.title = "Title is required and cannot be empty";
+    }
+    if (!description || !description.trim()) {
+      newErrors.description = "Description is required and cannot be empty";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   if (!projectaya) {
     return <div className="justify-center">Project not found</div>;
@@ -36,7 +49,7 @@ const ProjectDetails = () => {
                 onClick={() => {
                   setDescription(false);
                   setTitle("");
-                  setPriority("Low")
+                  setPriority("Low");
                   setDescription("");
                   setIdT("");
                   setCreate(false);
@@ -47,41 +60,71 @@ const ProjectDetails = () => {
               </MyButton>
             </div>
             <div className="flex flex-col h-full justify-center m-auto">
-              <h2 className="text-2xl font-bold mt-2 ml-8"> Title </h2>
+              <h2 className="text-2xl font-bold mt-2 ml-8">
+                Title <span className="text-red-500">*</span>
+              </h2>
               <input
-                className="rounded-4xl text-black border-3 transition-all duration-500 hover:scale-105 mx-10 my-3 py-2 px-5"
-                onChange={(e) => setTitle(e.target.value)}
+                className={`rounded-4xl text-black border-3 transition-all duration-500 hover:scale-105 mx-10 my-3 py-2 px-5 ${errors.title ? "border-red-500 bg-red-50" : ""}`}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  if (errors.title)
+                    setErrors((prev) => ({ ...prev, title: "" }));
+                }}
                 value={title}
+                placeholder="Enter task title"
               />
-              <h2 className="text-2xl font-bold mt-2 ml-8"> Description </h2>
+              {errors.title && (
+                <p className="text-red-600 font-semibold ml-12 text-sm">
+                  {errors.title}
+                </p>
+              )}
+
+              <h2 className="text-2xl font-bold mt-2 ml-8">
+                Description <span className="text-red-500">*</span>
+              </h2>
               <input
-                className="rounded-4xl text-black border-3 transition-all duration-500 hover:scale-105 mx-10 my-3 py-2 px-5"
-                onChange={(e) => setDescription(e.target.value)}
+                className={`rounded-4xl text-black border-3 transition-all duration-500 hover:scale-105 mx-10 my-3 py-2 px-5 ${
+                  errors.description ? "border-red-500 bg-red-50" : ""
+                }`}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  if (errors.description)
+                    setErrors((prev) => ({ ...prev, description: "" }));
+                }}
                 value={description}
+                placeholder="Enter task description"
               />
+              {errors.description && (
+                <p className="text-red-600 font-semibold ml-12 text-sm">
+                  {errors.description}
+                </p>
+              )}
               <h2 className="text-2xl font-bold mt-2 ml-8"> Priority </h2>
               <div className="flex flexrow justify-around">
                 <MyButton
-                  buttonStyle={priority ==="Low" ? "navbar" : "cancel"}
+                  buttonStyle={priority === "Low" ? "navbar" : "cancel"}
                   onClick={() => {
-                    setPriority("Low")
-                  }}>
-                    Low
+                    setPriority("Low");
+                  }}
+                >
+                  Low
                 </MyButton>
                 <MyButton
-                  buttonStyle={priority ==="Medium" ? "navbar" : "cancel"}
+                  buttonStyle={priority === "Medium" ? "navbar" : "cancel"}
                   onClick={() => {
-                    setPriority("Medium")
-                  }}>
-                    Medium
+                    setPriority("Medium");
+                  }}
+                >
+                  Medium
                 </MyButton>
                 <MyButton
-                  buttonStyle={priority ==="High" ? "navbar" : "cancel"}
+                  buttonStyle={priority === "High" ? "navbar" : "cancel"}
                   onClick={() => {
-                    setPriority("High")
-                  }}>
-                    High
-                </MyButton>  
+                    setPriority("High");
+                  }}
+                >
+                  High
+                </MyButton>
               </div>
             </div>
             <div>
@@ -89,8 +132,9 @@ const ProjectDetails = () => {
                 size="large"
                 buttonStyle="navbar"
                 onClick={() => {
+                  if (!validate()) return;
                   if (edit) {
-                    editTask(idT, title, description,priority);
+                    editTask(idT, { title, description, priority });
                   } else {
                     addTask({
                       id: maxId() + 1,
@@ -105,7 +149,7 @@ const ProjectDetails = () => {
                   }
                   setDescription(false);
                   setTitle("");
-                  setPriority("Low")
+                  setPriority("Low");
                   setDescription("");
                   setIdT("");
                   setCreate(false);
@@ -142,7 +186,7 @@ const ProjectDetails = () => {
                 Add Task{" "}
               </MyButton>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 m-8 mx-10 ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 m-8 mx-10 ">
               {taskat.map((task) => (
                 <div
                   key={task.id}
@@ -167,7 +211,7 @@ const ProjectDetails = () => {
                         setCreate(true);
                         setEdit(true);
                         setIdT(task.id);
-                        setPriority(task.priority)
+                        setPriority(task.priority);
                       }}
                     >
                       Edit
