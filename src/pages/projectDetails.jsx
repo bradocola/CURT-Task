@@ -19,7 +19,7 @@ const ProjectDetails = () => {
   const [description, setDescription] = useState();
   const [priority, setPriority] = useState("Low");
   const [idT, setIdT] = useState();
-  const [assignedTo, setAssignedTo] = useState();
+  const [assignedTo, setAssignedTo] = useState(currentUser.id);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("To Do");
   const isValid = title?.trim() && description?.trim();
