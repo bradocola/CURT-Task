@@ -43,6 +43,11 @@ const Login = () => {
             {log ? "Login " : "Sign Up "} Page
           </h1>
         </div>
+        {errors.Log && (
+          <p className="text-red-600 font-semibold ml-12 text-sm">
+            {errors.Log}
+          </p>
+        )}
         <div className="flex flex-col h-full justify-center m-auto">
           {!log && (
             <>
@@ -144,17 +149,25 @@ const Login = () => {
               if (log) {
                 const r = login(email, pass);
                 if (r) {
+                  const newErr = {};
+                  newErr.Log = r;
+                  setErrors(newErr);
+                  return;
                 } else {
                   navigate(`/Profile`);
                 }
               } else {
                 const r = signup(name, email, pass);
                 if (r) {
+                  const newErr = {};
+                  newErr.Log = r;
+                  setErrors(newErr);
+                  return;
                 } else {
                   navigate(`/Profile`);
                 }
               }
-              setLog(false);
+              setLog(true);
               setName("");
               setPass("");
               setRePass("");

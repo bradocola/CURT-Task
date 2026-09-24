@@ -38,7 +38,7 @@ const TaskDetails = () => {
   }
 
   const assignee = user?.find((u) => u.id === taskaya.assignedTo);
-  const currentStatus = taskaya.status || "To Do";
+  const currentStatus = taskaya.status;
 
   const validate = () => {
     const newErrors = {};
@@ -51,6 +51,18 @@ const TaskDetails = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1500);
+  }, []);
+  if (loading) {
+    return (
+      <div className="flex justify-start min-h-screen flex-col pt-5 bg-orange-100">
+        <div className="m-auto animate-spin text-8xl">↻</div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-orange-100 flex justify-start min-h-screen flex-col pt-5">
@@ -116,9 +128,24 @@ const TaskDetails = () => {
 
             <h2 className="text-2xl font-bold mt-2 ml-8"> Priority </h2>
             <div className="flex flexrow justify-around">
-              <MyButton buttonStyle={priority === "Low" ? "navbar" : "cancel"} onClick={() => setPriority("Low")}>Low</MyButton>
-              <MyButton buttonStyle={priority === "Medium" ? "navbar" : "cancel"} onClick={() => setPriority("Medium")}>Medium</MyButton>
-              <MyButton buttonStyle={priority === "High" ? "navbar" : "cancel"} onClick={() => setPriority("High")}>High</MyButton>
+              <MyButton
+                buttonStyle={priority === "Low" ? "navbar" : "cancel"}
+                onClick={() => setPriority("Low")}
+              >
+                Low
+              </MyButton>
+              <MyButton
+                buttonStyle={priority === "Medium" ? "navbar" : "cancel"}
+                onClick={() => setPriority("Medium")}
+              >
+                Medium
+              </MyButton>
+              <MyButton
+                buttonStyle={priority === "High" ? "navbar" : "cancel"}
+                onClick={() => setPriority("High")}
+              >
+                High
+              </MyButton>
             </div>
 
             <h2 className="text-2xl font-bold mt-2 ml-8"> Status </h2>
@@ -170,8 +197,7 @@ const TaskDetails = () => {
                 onClick={() => {
                   if (!validate()) return;
 
-                  editTask(
-                    taskaya.id,{
+                  editTask(taskaya.id, {
                     title: title.trim(),
                     description: description.trim(),
                     priority,
@@ -204,7 +230,10 @@ const TaskDetails = () => {
           </div>
 
           <div className="mt-2 pt-3 border-t border-orange-300">
-            <h3 className="text-lg font-bold text-gray-800 mb-2 flex flexrow">Status is: <div className="text-blue-800 ml-1"> {taskaya.status}</div></h3>
+            <h3 className="text-lg font-bold text-gray-800 mb-2 flex flexrow">
+              Status is:{" "}
+              <div className="text-blue-800 ml-1"> {taskaya.status}</div>
+            </h3>
           </div>
 
           <div className="mt-2 pt-3 border-t border-orange-300 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -258,7 +287,9 @@ const TaskDetails = () => {
             >
               Edit Task
             </MyButton>
-            <MyButton size="small" onClick={() => navigate(`/projects/${id}`)}>Back to Project</MyButton>
+            <MyButton size="small" onClick={() => navigate(`/projects/${id}`)}>
+              Back to Project
+            </MyButton>
           </div>
         </div>
       )}

@@ -20,7 +20,11 @@ export function TaskProvider({ children }) {
     };
 
     function maxId() {
-        return Math.max(...(task.map((task) => (task.id))))
+        return task.length === 0 ? 0 : Math.max(...(task.map((task) => (task.id))))
+    }
+
+    function deleteTasksByProject(projectId){
+        setTask([...(task.filter((task) => (task.projectId !== projectId)))]);
     }
 
     function editTask(id, updates) {
@@ -36,7 +40,7 @@ export function TaskProvider({ children }) {
     }
 
     return (
-        <TaskContext.Provider value={{ task, setTask, maxId, addTask, deleteTask, editTask, updateStatus }}>
+        <TaskContext.Provider value={{ task, setTask, maxId, addTask, deleteTask, editTask, updateStatus, deleteTasksByProject}}>
             {children}
         </TaskContext.Provider>
     );

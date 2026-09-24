@@ -25,7 +25,7 @@ export function UserProvider({ children }) {
   }
 
   function maxId() {
-    return Math.max(...user.map((User) => User.id));
+    return user.length === 0 ? 0 : Math.max(...user.map((User) => User.id));
   }
 
   function editUser(id, name, password) {
