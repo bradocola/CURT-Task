@@ -41,6 +41,9 @@ const Projects = () => {
       </div>
     )
   }
+
+  const isValid = title?.trim() && description?.trim();
+
   return (
     <div className="flex justify-start min-h-screen flex-col pt-5 bg-orange-100">
       {create ? (
@@ -129,6 +132,7 @@ const Projects = () => {
                 setCreate(false);
                 setEdit(false);
               }}
+              disabled={!isValid}
             >
               {edit ? "Confirm Edit" : "Create"}
             </MyButton>

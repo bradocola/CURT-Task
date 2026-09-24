@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useProject } from "../context/ProjectContext.jsx";
 import { useTask } from "../context/TaskContext.jsx";
 import { useUser } from "../context/UserContext.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MyButton from "../components/buttons/Button.jsx";
 
 const TaskDetails = () => {
@@ -22,23 +22,6 @@ const TaskDetails = () => {
   const [status, setStatus] = useState("To Do");
   const [assignedTo, setAssignedTo] = useState(1);
   const [errors, setErrors] = useState({});
-
-  if (!taskaya) {
-    return (
-      <div className="bg-orange-100 flex justify-center items-center min-h-screen flex-col">
-        <h1 className="text-3xl font-bold mb-4">Task not found</h1>
-        <MyButton
-          buttonStyle="navbar"
-          onClick={() => navigate(`/projects/${id}`)}
-        >
-          Back to Project
-        </MyButton>
-      </div>
-    );
-  }
-
-  const assignee = user?.find((u) => u.id === taskaya.assignedTo);
-  const currentStatus = taskaya.status;
 
   const validate = () => {
     const newErrors = {};
@@ -63,6 +46,24 @@ const TaskDetails = () => {
       </div>
     );
   }
+
+  if (!taskaya) {
+    return (
+      <div className="bg-orange-100 flex justify-center items-center min-h-screen flex-col">
+        <h1 className="text-3xl font-bold mb-4">Task not found</h1>
+        <MyButton
+          buttonStyle="navbar"
+          onClick={() => navigate(`/projects/${id}`)}
+        >
+          Back to Project
+        </MyButton>
+      </div>
+    );
+  }
+  const assignee = user?.find((u) => u.id === taskaya.assignedTo);
+  const currentStatus = taskaya.status;
+
+  const isValid = title?.trim() && description?.trim();
 
   return (
     <div className="bg-orange-100 flex justify-start min-h-screen flex-col pt-5">
@@ -176,11 +177,14 @@ const TaskDetails = () => {
               value={assignedTo}
               onChange={(e) => setAssignedTo(parseInt(e.target.value))}
             >
-              {user?.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.name} ({u.email})
-                </option>
-              ))}
+                {projectaya.members
+                  ?.map((mid) => user.find((u) => u.id === mid))
+                  .filter(Boolean)
+                  .map((u) => (
+                    <option key={u.id} value={u.id}>
+                      {u.name} ({u.email})
+                    </option>
+                  ))}
             </select>
 
             <div className="flex justify-end gap-4 mt-6">
@@ -206,8 +210,9 @@ const TaskDetails = () => {
                   });
                   setIsEditing(false);
                 }}
+                disabled={!isValid}
               >
-                Save Changes
+                Confirm Edit
               </MyButton>
             </div>
           </div>

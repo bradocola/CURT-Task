@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useProject } from "../context/ProjectContext.jsx";
 import { useTask } from "../context/TaskContext.jsx";
 import { useUser } from "../context/UserContext.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MyButton from "../components/buttons/Button.jsx";
 const ProjectDetails = () => {
   const { project } = useProject();
@@ -21,6 +21,7 @@ const ProjectDetails = () => {
   const [idT, setIdT] = useState();
   const [assignedTo, setAssignedTo] = useState();
   const [errors, setErrors] = useState({});
+  const isValid = title?.trim() && description?.trim();
 
   const validate = () => {
     const newErrors = {};
@@ -161,6 +162,7 @@ const ProjectDetails = () => {
               <MyButton
                 size="large"
                 buttonStyle="navbar"
+                disabled={!isValid}
                 onClick={() => {
                   if (!validate()) return;
                   if (edit) {

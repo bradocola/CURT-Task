@@ -35,6 +35,9 @@ const Login = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const isValid = email?.trim() && pass?.trim() && (log ||(name?.trim()&&rePass?.trim()));
+
   return (
     <div className="bg-orange-100 flex justify-center min-h-screen flex-col pt-5">
       <div>
@@ -144,6 +147,7 @@ const Login = () => {
           <MyButton
             size="large"
             buttonStyle="navbar"
+            disabled={!isValid}
             onClick={() => {
               if (!validate()) return;
               if (log) {
