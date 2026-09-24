@@ -33,7 +33,7 @@ function Inner() {
         <Route path="/projects" element={!currentUser ? <Navigate to="/login" replace /> :<Projects />} />
         <Route path="/projects/:id" element={!currentUser ? <Navigate to="/login" replace /> :<ProjectDetails />} />
         <Route path="/projects/:id/:taskId" element={!currentUser ? <Navigate to="/login" replace /> :<TaskDetails />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={currentUser ? <Navigate to="/profile" replace /> :<Login />} />
       </Routes>
     </>
   );
