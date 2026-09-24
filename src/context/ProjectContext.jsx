@@ -23,9 +23,9 @@ export function ProjectProvider({ children }) {
       : Math.max(...project.map((project) => project.id));
   }
 
-  function editProject(id, title, description, assignedTo) {
+  function editProject(id, title, description) {
     setProject(
-      project.map((p) => (p.id === id ? { ...p, title, description, assignedTo } : p)),
+      project.map((p) => (p.id === id ? { ...p, title, description } : p)),
     );
   }
 

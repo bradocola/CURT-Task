@@ -29,17 +29,16 @@ const Projects = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-
   const [loading, setLoading] = useState(true);
-  useEffect(() => {setTimeout(() => setLoading(false), 1500)},[])
-  if(loading){
-    return(
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500);
+  }, []);
+  if (loading) {
+    return (
       <div className="flex justify-start min-h-screen flex-col pt-5 bg-orange-100">
-        <div className="m-auto animate-spin text-8xl">
-          ↻
-        </div>
+        <div className="m-auto animate-spin text-8xl">↻</div>
       </div>
-    )
+    );
   }
 
   const isValid = title?.trim() && description?.trim();
@@ -167,7 +166,7 @@ const Projects = () => {
                   <h2 className="text-2xl font-semibold">{project.title}</h2>
                   <p>{project.description}</p>
                   <div className="flex justify-end items-center mt-2 flexrow mt-auto">
-                    <MyButton
+                    {currentUser.id === parseInt(project.ownerId) && (<MyButton
                       size="small"
                       buttonStyle="delete"
                       onClick={() => {
@@ -176,26 +175,30 @@ const Projects = () => {
                       }}
                     >
                       Delete
-                    </MyButton>
-                    <MyButton
-                      size="small"
-                      buttonStyle="navbar"
-                      onClick={() => {
-                        setTitle(project.title);
-                        setDescription(project.description);
-                        setCreate(true);
-                        setEdit(true);
-                        setId(project.id);
-                      }}
-                    >
-                      Edit
-                    </MyButton>
-                    <MyButton
-                      size="small"
-                      onClick={() => navigate(`/projects/${project.id}`)}
-                    >
-                      View Project
-                    </MyButton>
+                    </MyButton>)}
+                    {currentUser.id === parseInt(project.ownerId) && (
+                      <MyButton
+                        size="small"
+                        buttonStyle="navbar"
+                        onClick={() => {
+                          setTitle(project.title);
+                          setDescription(project.description);
+                          setCreate(true);
+                          setEdit(true);
+                          setId(project.id);
+                        }}
+                      >
+                        Edit
+                      </MyButton>
+                    )}
+                    {project.members.includes(currentUser.id) && (
+                      <MyButton
+                        size="small"
+                        onClick={() => navigate(`/projects/${project.id}`)}
+                      >
+                        View Project
+                      </MyButton>
+                    )}
                   </div>
                 </div>
               ))}

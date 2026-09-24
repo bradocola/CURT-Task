@@ -8,7 +8,7 @@ import MyButton from "../components/buttons/Button.jsx";
 const TaskDetails = () => {
   const { project } = useProject();
   const { task, deleteTask, editTask, updateStatus } = useTask();
-  const { user } = useUser();
+  const { user, currentUser } = useUser();
   const { id, taskId } = useParams();
   const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ const TaskDetails = () => {
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1500);
+    setTimeout(() => setLoading(false), 500);
   }, []);
   if (loading) {
     return (
@@ -61,7 +61,6 @@ const TaskDetails = () => {
     );
   }
   const assignee = user?.find((u) => u.id === taskaya.assignedTo);
-  const currentStatus = taskaya.status;
 
   const isValid = title?.trim() && description?.trim();
 
@@ -99,6 +98,7 @@ const TaskDetails = () => {
               }}
               value={title}
               placeholder="Enter task title"
+              disabled={currentUser.id !== parseInt(projectaya.ownerId)}
             />
             {errors.title && (
               <p className="text-red-600 font-semibold ml-12 text-sm">
@@ -120,6 +120,7 @@ const TaskDetails = () => {
               }}
               value={description}
               placeholder="Enter task description"
+              disabled={currentUser.id !== parseInt(projectaya.ownerId)}
             />
             {errors.description && (
               <p className="text-red-600 font-semibold ml-12 text-sm">
@@ -132,18 +133,21 @@ const TaskDetails = () => {
               <MyButton
                 buttonStyle={priority === "Low" ? "navbar" : "cancel"}
                 onClick={() => setPriority("Low")}
+                disabled={currentUser.id !== parseInt(projectaya.ownerId)}
               >
                 Low
               </MyButton>
               <MyButton
                 buttonStyle={priority === "Medium" ? "navbar" : "cancel"}
                 onClick={() => setPriority("Medium")}
+                disabled={currentUser.id !== parseInt(projectaya.ownerId)}
               >
                 Medium
               </MyButton>
               <MyButton
                 buttonStyle={priority === "High" ? "navbar" : "cancel"}
                 onClick={() => setPriority("High")}
+                disabled={currentUser.id !== parseInt(projectaya.ownerId)}
               >
                 High
               </MyButton>
@@ -176,15 +180,16 @@ const TaskDetails = () => {
               className="rounded-4xl text-black border-3 transition-all duration-500 hover:scale-105 mx-10 my-3 py-2 px-5 bg-white"
               value={assignedTo}
               onChange={(e) => setAssignedTo(parseInt(e.target.value))}
+              disabled={currentUser.id !== parseInt(projectaya.ownerId)}
             >
-                {projectaya.members
-                  ?.map((mid) => user.find((u) => u.id === mid))
-                  .filter(Boolean)
-                  .map((u) => (
-                    <option key={u.id} value={u.id}>
-                      {u.name} ({u.email})
-                    </option>
-                  ))}
+              {projectaya.members
+                ?.map((mid) => user.find((u) => u.id === mid))
+                .filter(Boolean)
+                .map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.name} ({u.email})
+                  </option>
+                ))}
             </select>
 
             <div className="flex justify-end gap-4 mt-6">
@@ -261,22 +266,24 @@ const TaskDetails = () => {
             <div>
               <h3 className="text-lg font-bold text-gray-800">Project</h3>
               <p className="text-base text-gray-900 mt-1 font-medium">
-                📁 {projectaya.title}
+                {projectaya.title}
               </p>
             </div>
           </div>
 
           <div className="flex justify-end items-center gap-3 mt-6 pt-4 border-t border-orange-300 flex-wrap">
-            <MyButton
-              size="small"
-              buttonStyle="delete"
-              onClick={() => {
-                deleteTask(taskaya.id);
-                navigate(`/projects/${id}`);
-              }}
-            >
-              Delete Task
-            </MyButton>
+            {currentUser.id === parseInt(projectaya.ownerId) && (
+              <MyButton
+                size="small"
+                buttonStyle="delete"
+                onClick={() => {
+                  deleteTask(taskaya.id);
+                  navigate(`/projects/${id}`);
+                }}
+              >
+                Delete Task
+              </MyButton>
+            )}
             <MyButton
               size="small"
               buttonStyle="navbar"

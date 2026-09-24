@@ -21,6 +21,7 @@ const ProjectDetails = () => {
   const [idT, setIdT] = useState();
   const [assignedTo, setAssignedTo] = useState();
   const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState("To Do");
   const isValid = title?.trim() && description?.trim();
 
   const validate = () => {
@@ -37,7 +38,7 @@ const ProjectDetails = () => {
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1500);
+    setTimeout(() => setLoading(false), 500);
   }, []);
   if (loading) {
     return (
@@ -87,6 +88,7 @@ const ProjectDetails = () => {
                 }}
                 value={title}
                 placeholder="Enter task title"
+                disabled={currentUser.id !== parseInt(projectaya.ownerId)}
               />
               {errors.title && (
                 <p className="text-red-600 font-semibold ml-12 text-sm">
@@ -108,6 +110,7 @@ const ProjectDetails = () => {
                 }}
                 value={description}
                 placeholder="Enter task description"
+                disabled={currentUser.id !== parseInt(projectaya.ownerId)}
               />
               {errors.description && (
                 <p className="text-red-600 font-semibold ml-12 text-sm">
@@ -121,6 +124,7 @@ const ProjectDetails = () => {
                   onClick={() => {
                     setPriority("Low");
                   }}
+                  disabled={currentUser.id !== parseInt(projectaya.ownerId)}
                 >
                   Low
                 </MyButton>
@@ -129,6 +133,7 @@ const ProjectDetails = () => {
                   onClick={() => {
                     setPriority("Medium");
                   }}
+                  disabled={currentUser.id !== parseInt(projectaya.ownerId)}
                 >
                   Medium
                 </MyButton>
@@ -137,8 +142,31 @@ const ProjectDetails = () => {
                   onClick={() => {
                     setPriority("High");
                   }}
+                  disabled={currentUser.id !== parseInt(projectaya.ownerId)}
                 >
                   High
+                </MyButton>
+              </div>
+
+              <h2 className="text-2xl font-bold mt-2 ml-8"> Status </h2>
+              <div className="flex flexrow justify-around">
+                <MyButton
+                  buttonStyle={status === "To Do" ? "navbar" : "cancel"}
+                  onClick={() => setStatus("To Do")}
+                >
+                  To Do
+                </MyButton>
+                <MyButton
+                  buttonStyle={status === "In Progress" ? "navbar" : "cancel"}
+                  onClick={() => setStatus("In Progress")}
+                >
+                  In Progress
+                </MyButton>
+                <MyButton
+                  buttonStyle={status === "Done" ? "navbar" : "cancel"}
+                  onClick={() => setStatus("Done")}
+                >
+                  Done
                 </MyButton>
               </div>
 
@@ -147,6 +175,7 @@ const ProjectDetails = () => {
                 className="rounded-4xl text-black border-3 transition-all duration-500 hover:scale-105 mx-10 my-3 py-2 px-5 bg-white"
                 value={assignedTo}
                 onChange={(e) => setAssignedTo(parseInt(e.target.value))}
+                disabled={currentUser.id !== parseInt(projectaya.ownerId)}
               >
                 {projectaya.members
                   ?.map((mid) => user.find((u) => u.id === mid))
@@ -207,13 +236,15 @@ const ProjectDetails = () => {
                   <p>{projectaya.description}</p>
                 </div>
               </div>
-              <MyButton
-                size="large"
-                buttonStyle="navbar"
-                onClick={() => setCreate(true)}
-              >
-                Add Task
-              </MyButton>
+              {currentUser.id === parseInt(projectaya.ownerId) && (
+                <MyButton
+                  size="large"
+                  buttonStyle="navbar"
+                  onClick={() => setCreate(true)}
+                >
+                  Add Task
+                </MyButton>
+              )}
             </div>
             {taskat.length === 0 ? (
               <div className="flex flex-col items-center justify-center text-center gap-8 m-10 min-h-75">
@@ -231,36 +262,45 @@ const ProjectDetails = () => {
                     <h2 className="text-2xl font-semibold">{task.title}</h2>
                     <p>{task.description}</p>
                     <div className="flex justify-end items-center mt-2 flexrow mt-auto">
-                      <MyButton
-                        size="small"
-                        buttonStyle="delete"
-                        onClick={() => deleteTask(task.id)}
-                      >
-                        Delete
-                      </MyButton>
-                      <MyButton
-                        size="small"
-                        buttonStyle="navbar"
-                        onClick={() => {
-                          setTitle(task.title);
-                          setDescription(task.description);
-                          setCreate(true);
-                          setEdit(true);
-                          setIdT(task.id);
-                          setPriority(task.priority);
-                          setAssignedTo(task.assignedTo);
-                        }}
-                      >
-                        Edit
-                      </MyButton>
-                      <MyButton
-                        size="small"
-                        onClick={() =>
-                          navigate(`/projects/${projectaya.id}/${task.id}`)
-                        }
-                      >
-                        View Task
-                      </MyButton>
+                      {currentUser.id === parseInt(projectaya.ownerId) && (
+                        <MyButton
+                          size="small"
+                          buttonStyle="delete"
+                          onClick={() => deleteTask(task.id)}
+                        >
+                          Delete
+                        </MyButton>
+                      )}
+                      {(currentUser.id === parseInt(projectaya.ownerId) ||
+                        currentUser.id === parseInt(task.assignedTo)) && (
+                        <MyButton
+                          size="small"
+                          buttonStyle="navbar"
+                          onClick={() => {
+                            setTitle(task.title);
+                            setDescription(task.description);
+                            setCreate(true);
+                            setEdit(true);
+                            setIdT(task.id);
+                            setPriority(task.priority);
+                            setAssignedTo(task.assignedTo);
+                            setStatus(task.status)
+                          }}
+                        >
+                          Edit
+                        </MyButton>
+                      )}
+                      {(currentUser.id === parseInt(projectaya.ownerId) ||
+                        currentUser.id === parseInt(task.assignedTo)) && (
+                        <MyButton
+                          size="small"
+                          onClick={() =>
+                            navigate(`/projects/${projectaya.id}/${task.id}`)
+                          }
+                        >
+                          View Task
+                        </MyButton>
+                      )}
                     </div>
                   </div>
                 ))}

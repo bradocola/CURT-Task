@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MyNav from "./components/buttons/Navbar.jsx";
 import Profile from "./pages/profile.jsx";
-import Dashboard from "./pages/dashboard.jsx";
 import Projects from "./pages/projects.jsx";
 import Login from "./pages/login.jsx";
 import ProjectDetails from "./pages/projectDetails.jsx";
@@ -29,9 +28,8 @@ function Inner() {
     <>
       {currentUser && <MyNav /> }
       <Routes>
-        <Route path="/" element={!currentUser ? <Navigate to="/login" replace /> : <Dashboard />} />
+        <Route path="/" element={!currentUser ? <Navigate to="/login" replace /> : <Navigate to="/profile" replace /> } />
         <Route path="/profile" element={!currentUser ? <Navigate to="/login" replace /> :<Profile />} />
-        <Route path="/dashboard" element={!currentUser ? <Navigate to="/login" replace /> :<Dashboard />} />
         <Route path="/projects" element={!currentUser ? <Navigate to="/login" replace /> :<Projects />} />
         <Route path="/projects/:id" element={!currentUser ? <Navigate to="/login" replace /> :<ProjectDetails />} />
         <Route path="/projects/:id/:taskId" element={!currentUser ? <Navigate to="/login" replace /> :<TaskDetails />} />
