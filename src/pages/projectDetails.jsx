@@ -55,8 +55,8 @@ const ProjectDetails = () => {
       <div className="bg-orange-100 flex justify-center min-h-screen flex-col pt-5">
         {create ? (
           <div>
-            <div className="flex flexrow justify-between">
-              <h1 className="text-4xl font-bold mt-4 ml-4">
+            <div className="flex flex-col sm:flex-row justify-between ">
+              <h1 className="text-2xl sm:text-4xl font-bold mt-4 ml-4">
                 {edit ? "Edit" : "Add"} Task Page
               </h1>
               <MyButton
@@ -118,7 +118,7 @@ const ProjectDetails = () => {
                 </p>
               )}
               <h2 className="text-2xl font-bold mt-2 ml-8"> Priority </h2>
-              <div className="flex flexrow justify-around">
+              <div className="flex flex-row justify-around">
                 <MyButton
                   buttonStyle={priority === "Low" ? "navbar" : "cancel"}
                   onClick={() => {
@@ -149,7 +149,7 @@ const ProjectDetails = () => {
               </div>
 
               <h2 className="text-2xl font-bold mt-2 ml-8"> Status </h2>
-              <div className="flex flexrow justify-around">
+              <div className="flex flex-row justify-around">
                 <MyButton
                   buttonStyle={status === "To Do" ? "navbar" : "cancel"}
                   onClick={() => setStatus("To Do")}
@@ -223,16 +223,16 @@ const ProjectDetails = () => {
           </div>
         ) : (
           <div>
-            <div className="flex flexrow justify-between px-15">
-              <div className="flex flexrow">
+            <div className="flex flex-col sm:flex-row justify-between  px-15">
+              <div className="flex flex-row">
                 <button
-                  className="text-6xl hover:opacity-50"
+                  className="text-3xl sm:text-6xl hover:opacity-50"
                   onClick={() => navigate(`/projects`)}
                 >
                   ⬅️
                 </button>
                 <div>
-                  <h1 className="text-4xl font-bold">{projectaya.title}</h1>
+                  <h1 className="text-2xl sm:text-4xl font-bold">{projectaya.title}</h1>
                   <p>{projectaya.description}</p>
                 </div>
               </div>
@@ -248,7 +248,7 @@ const ProjectDetails = () => {
             </div>
             {taskat.length === 0 ? (
               <div className="flex flex-col items-center justify-center text-center gap-8 m-10 min-h-75">
-                <h1 className="text-6xl font-semibold">
+                <h1 className="text-3xl sm:text-6xl font-semibold">
                   No Tasks Exist Create a Task to see results
                 </h1>
               </div>
@@ -261,7 +261,7 @@ const ProjectDetails = () => {
                   >
                     <h2 className="text-2xl font-semibold">{task.title}</h2>
                     <p>{task.description}</p>
-                    <div className="flex justify-end items-center mt-2 flexrow mt-auto">
+                    <div className="flex justify-end items-center mt-2 flex-row mt-auto">
                       {currentUser.id === parseInt(projectaya.ownerId) && (
                         <MyButton
                           size="small"

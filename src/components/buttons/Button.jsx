@@ -1,6 +1,6 @@
 const MyButton = (props) => {
     const { size, buttonStyle, onClick, children, disabled } = props;
-    let classStyle = `rounded-4xl text-black border-3 ${disabled?"":"hover:text-white transition-all duration-500 hover:scale-115"}`;
+    let classStyle = `rounded-4xl text-black border-3 ${disabled?"":"hover:text-white transition-all duration-500 hover:scale-115 w-full sm:w-auto"}`;
     switch (buttonStyle) {
         case "delete":
             classStyle += ` bg-red-200 border-red-800 ${disabled?"":"hover:bg-red-600 hover:text-white hover:border-red-800"}`;
@@ -29,7 +29,7 @@ const MyButton = (props) => {
     }
 
     return (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center w-full sm:w-auto">
             <button
                 onClick={onClick}
                 className = {classStyle}

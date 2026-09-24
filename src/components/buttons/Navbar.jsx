@@ -15,7 +15,7 @@ const MyNavButton = (props) => {
   }
 
   return (
-    <div className="flex justify-center items-center ">
+    <div className="flex justify-center items-center w-full sm:w-auto ">
       <button onClick={onClick} className={classStyle}>
         {children}
       </button>

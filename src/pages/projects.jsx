@@ -47,8 +47,8 @@ const Projects = () => {
     <div className="flex justify-start min-h-screen flex-col pt-5 bg-orange-100">
       {create ? (
         <div>
-          <div className="flex flexrow justify-between">
-            <h1 className="text-4xl font-bold mt-4 ml-4">
+          <div className="flex flex-col sm:flex-row justify-between ">
+            <h1 className="text-2xl sm:text-4xl font-bold mt-4 ml-4">
               {edit ? "Edit" : "Create"} Project Page
             </h1>
             <MyButton
@@ -139,7 +139,7 @@ const Projects = () => {
         </div>
       ) : (
         <div>
-          <div className="flex flexrow justify-between px-15">
+          <div className="flex flex-col sm:flex-row justify-between  px-15">
             <h1 className="text-4xl font-bold mt-4"> Projects Page </h1>
             <MyButton
               size="large"
@@ -152,7 +152,7 @@ const Projects = () => {
 
           {project.length === 0 ? (
             <div className="flex flex-col items-center justify-center text-center gap-8 m-10 min-h-75">
-              <h1 className="text-6xl font-semibold">
+              <h1 className="text-3xl sm:text-6xl font-semibold">
                 No Project Exist Create a Project to see results
               </h1>
             </div>

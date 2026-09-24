@@ -66,7 +66,7 @@ const TaskDetails = () => {
 
   return (
     <div className="bg-orange-100 flex justify-start min-h-screen flex-col pt-5">
-      <div className="flex flexrow items-center px-15">
+      <div className="flex flex-row items-center px-15">
         <button
           className="text-6xl hover:opacity-50 cursor-pointer"
           onClick={() => navigate(`/projects/${id}`)}
@@ -74,7 +74,7 @@ const TaskDetails = () => {
           ⬅️
         </button>
         <div className="ml-4">
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-2xl sm:text-4xl font-bold">
             {isEditing ? "Edit Task" : "Task Details"}
           </h1>
           <p className="text-gray-700">
@@ -129,7 +129,7 @@ const TaskDetails = () => {
             )}
 
             <h2 className="text-2xl font-bold mt-2 ml-8"> Priority </h2>
-            <div className="flex flexrow justify-around">
+            <div className="flex flex-row justify-around">
               <MyButton
                 buttonStyle={priority === "Low" ? "navbar" : "cancel"}
                 onClick={() => setPriority("Low")}
@@ -154,7 +154,7 @@ const TaskDetails = () => {
             </div>
 
             <h2 className="text-2xl font-bold mt-2 ml-8"> Status </h2>
-            <div className="flex flexrow justify-around">
+            <div className="flex flex-row justify-around">
               <MyButton
                 buttonStyle={status === "To Do" ? "navbar" : "cancel"}
                 onClick={() => setStatus("To Do")}
@@ -240,7 +240,7 @@ const TaskDetails = () => {
           </div>
 
           <div className="mt-2 pt-3 border-t border-orange-300">
-            <h3 className="text-lg font-bold text-gray-800 mb-2 flex flexrow">
+            <h3 className="text-lg font-bold text-gray-800 mb-2 flex flex-row">
               Status is:{" "}
               <div className="text-blue-800 ml-1"> {taskaya.status}</div>
             </h3>

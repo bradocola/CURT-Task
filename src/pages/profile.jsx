@@ -27,10 +27,10 @@ const Profile = () => {
 
   return (
     <div className="flex bg-orange-100 items-start flex-col ">
-      <div className="flex flex-row justify-between w-full px-15">
+      <div className="flex flex-col sm:flex-row sm:justify-between items-center sm:items-start gap-4 w-full px-4 sm:px-15">
         <div className="flex flex-col mt-5 ml-5">
-          <h1 className="text-4xl font-bold">{currentUser.name}</h1>
-          <h1 className="text-3xl font-bold">{currentUser.email}</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold">{currentUser.name}</h1>
+          <h1 className="text-lg sm:text-3xl font-bold">{currentUser.email}</h1>
         </div>
         <MyButton
           buttonStyle="delete"
@@ -47,7 +47,7 @@ const Profile = () => {
 
         {projectat.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center gap-8 m-10 min-h-75">
-            <h1 className="text-6xl font-semibold">
+            <h1 className="text-2xl font-semibold">
               No Project Exist Create a Project from the Projects navBar
             </h1>
           </div>
@@ -76,7 +76,7 @@ const Profile = () => {
       <h1 className="text-4xl font-bold mt-5 ml-5 px-15">My Tasks</h1>
       {taskat.length === 0 ? (
               <div className="flex flex-col items-center justify-center text-center gap-8 m-10 min-h-75">
-                <h1 className="text-6xl font-semibold">
+                <h1 className="text-2xl font-semibold">
                   No Tasks Exist Create a Task to see results
                 </h1>
               </div>

@@ -41,8 +41,8 @@ const Login = () => {
   return (
     <div className="bg-orange-100 flex justify-center min-h-screen flex-col pt-5">
       <div>
-        <div className="flex flexrow justify-between">
-          <h1 className="text-4xl font-bold mt-4 ml-4">
+        <div className="flex flex-col sm:flex-row justify-between ">
+          <h1 className="text-2xl sm:text-4xl font-bold mt-4 ml-4">
             {log ? "Login " : "Sign Up "} Page
           </h1>
         </div>
